@@ -10,19 +10,36 @@
             });
         })
         .controller("screen1Controller", function ($scope, $rootScope, metadata) {
+            var self = this;
 
-            $scope.model = {
-                fields: metadata.fields
+            this.model = {
+                fields: metadata.fields,
+                testData: metadata.testData
             };
+
+
+            $scope.$watch(function () {
+                return self.model.testData;
+            },function(value) {
+                metadata.testData = value;
+            });
 
             $rootScope.$broadcast("setTab", 0);
 
         })
-        .controller("screen2Controller", function ($scope, $rootScope, metadata) {
+        .controller("screen2Controller", function ($scope,  $rootScope, metadata) {
+            var self = this;
 
-            $scope.model = {
-                fields: metadata.fields
+            this.model = {
+                fields: metadata.fields,
+                testData: metadata.testData
             };
+
+            $scope.$watch(function () {
+                return self.model.testData;
+            }, function (value) {
+                metadata.testData = value;
+            });
 
             $rootScope.$broadcast("setTab", 1);
         });

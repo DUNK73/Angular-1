@@ -45,19 +45,22 @@
     </script>
 
     <script type='text/ng-template' id='tpl-screen1'>
-        <div ng-controller="screen1Controller">
+        <div ng-controller="screen1Controller as sc1">
+
+            {{sc1.model.testData}}
+            <input class="form-control" ng-model="sc1.model.testData"/>
 
             <div class="row">
                 <div class="form-group col-md-4">
                     <label>Filter</label>
-                    <input class="form-control" ng-model="filterValue" />
+                    <input class="form-control" ng-model="sc1.filterValue" />
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-4">
                     <label>Fields</label>
-                    <div ng-repeat="item in model.fields | filter:{name:filterValue}">
+                    <div ng-repeat="item in sc1.model.fields | filter:{name:sc1.filterValue}">
                         <input type="checkbox" ng-model="item.selected" /> {{item.name}}
                     </div>
                 </div>
@@ -66,11 +69,14 @@
     </script>
 
     <script type='text/ng-template' id='tpl-screen2'>
-        <div ng-controller="screen2Controller">
+        <div ng-controller="screen2Controller as sc2">
+
+            {{sc1.model.testData}}
+            <input class="form-control" ng-model="sc2.model.testData"/>
 
             <form name="ValidateForm">
 
-                <div class="row" ng-repeat="item in model.fields | filter:{selected:true}">
+                <div class="row" ng-repeat="item in sc2.model.fields | filter:{selected:true}">
                     <div class="form-group">
                         <label>{{item.name}}</label>
                         <div class=""
