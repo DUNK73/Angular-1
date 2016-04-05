@@ -1,0 +1,12 @@
+{
+  "name": "AngularTestApp",
+  "private": true,
+  "dependencies": {
+    "angular": "",
+    "angular-ui-router": "",
+    "bootstrap": "",
+    "angular-material": "",
+    "angular-animate": "",
+    "angular-aria": ""
+  }
+}

@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html ng-app="AngularTest.App">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src * file: ; connect-src * file: ; style-src 'self' 'unsafe-inline'; script-src * 'unsafe-eval'; img-src * 'self' blob: data: filesystem:">
+    <title></title>
+    <link href="wwwroot/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="wwwroot/lib/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="wwwroot/lib/angular-material/angular-material.css" rel="stylesheet" />
+    <style>
+        .tab-content {
+            padding: 40px 0 20px 0;
+        }
+
+        .erors {
+            color: red;
+        }
+
+        input[type='text'], input[type='number'], input[type='date'] {
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script type='text/ng-template' id='error'>
+        <div class="erors">
+            <div ng-if="ValidateForm[item.name].$error.required">
+                Error required
+            </div>
+            <div ng-if="ValidateForm[item.name].$error.min">
+                Error min (min value = {{item.validationRules.min}})
+            </div>
+            <div ng-if="ValidateForm[item.name].$error.max">
+                Error max (max value = {{item.validationRules.max}})
+            </div>
+            <div ng-if="ValidateForm[item.name].$error.minlength">
+                Error min lenth (min lenth = {{item.validationRules.minlength}})
+            </div>
+            <div ng-if="ValidateForm[item.name].$error.maxlength">
+                Error max lenth (max lenth = {{item.validationRules.maxlength}})
+            </div>
+        </div>
+    </script>
+
+    <script type='text/ng-template' id='tpl-screen1'>
+        <div ng-controller="screen1Controller">
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label>Filter</label>
+                    <input class="form-control" ng-model="filterValue" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label>Fields</label>
+                    <div ng-repeat="item in model.fields | filter:{name:filterValue}">
+                        <input type="checkbox" ng-model="item.selected" /> {{item.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type='text/ng-template' id='tpl-screen2'>
+        <div ng-controller="screen2Controller">
+
+            <form name="ValidateForm">
+
+                <div class="row" ng-repeat="item in model.fields | filter:{selected:true}">
+                    <div class="form-group">
+                        <label>{{item.name}}</label>
+                        <div class=""
+                             ng-switch on="item.type">
+
+                            <div ng-switch-when="drop-down">
+                                <select name="{{item.name}}"
+                                        ng-model="item.value"
+                                        ng-required="item.validationRules.required"
+                                        ng-options="o for o in item.options"></select>
+                            </div>
+
+                            <div ng-switch-when="numeric">
+                                <input type="number"
+                                       name="{{item.name}}"
+                                       ng-model="item.value"
+                                       ng-required="item.validationRules.required"
+                                       min="{{item.validationRules.min}}"
+                                       max="{{item.validationRules.max}}" />
+                            </div>
+
+                            <div ng-switch-when="money">
+                                <input type="number"
+                                       name="{{item.name}}"
+                                       ng-model="item.value"
+                                       ng-required="item.validationRules.required"
+                                       min="{{item.validationRules.min}}"
+                                       max="{{item.validationRules.max}}" /> {{item.currency}}
+                            </div>
+
+                            <div ng-switch-when="datepicker">
+                                <md-datepicker name="{{item.name}}"
+                                               ng-model="item.value"
+                                               md-placeholder="Enter date"
+                                               ng-required="item.validationRules.required"></md-datepicker>
+                            </div>
+
+                            <div ng-switch-default>
+                                <input type="{{item.type}}"
+                                       name="{{item.name}}"
+                                       ng-model="item.value"
+                                       ng-required="item.validationRules.required"
+                                       ng-minlength="item.validationRules.minlength"
+                                       ng-maxlength="item.validationRules.maxlength" />
+
+                            </div>
+
+                            <div class="erors" ng-include="'error'"></div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </script>
+
+    <div class="container" ng-controller="appController">
+
+        <h1> Angular App Test</h1>
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" ng-class="{'active': model.tabIndex == 0}"><a ui-sref="screen1">Screen 1</a></li>
+            <li role="presentation" ng-class="{'active': model.tabIndex == 1}"><a ui-sref="screen2">Screen 2</a></li>
+        </ul>
+        <div class="tab-content">
+            <div ui-view>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script src="wwwroot/lib/angular/angular.js"></script>
+    <script src="wwwroot/lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="wwwroot/lib/angular-aria/angular-aria.js"></script>
+    <script src="wwwroot/lib/angular-animate/angular-animate.js"></script>
+    <script src="wwwroot/lib/angular-material/angular-material.js"></script>
+
+    <script src="wwwroot/js/app.js"></script>
+    <script src="wwwroot/js/controllers.js"></script>
+    <script src="wwwroot/js/services.js"></script>
+
+</body>
+</html>
